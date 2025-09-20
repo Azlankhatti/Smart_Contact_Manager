@@ -96,4 +96,5 @@ public class Contact {
         this.user = user;
     }
 
+
 }

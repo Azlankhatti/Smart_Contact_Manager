@@ -1,4 +1,4 @@
-package com.smart;
+package com.smart.controller;
 
 import com.smart.dao.UserRepository;
 import com.smart.entities.User;
