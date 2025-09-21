@@ -82,6 +82,16 @@
 
     <i onclick="toggleSidebar()" class="fas fa-bars m-3"></i>
 
+<!--    message box-->
+    <div th:if="${message}" class="container">
+      <div th:classappend="${'alert-'+ message.type}" class="alert text-center" role="alert">
+        <span th:text="${message.content}" ></span>
+      </div>
+
+    </div>
+
+
+
   <div th:replace="${content}"></div>
 
 </div>
