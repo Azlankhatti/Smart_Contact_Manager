@@ -26,26 +26,26 @@ import java.security.Principal;
 @RequestMapping("/user")
 public class UserController {
 
-        @Autowired
-        private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-        @ModelAttribute
-        public void addCommonData(Model model , Principal principal){
+    @ModelAttribute
+    public void addCommonData(Model model , Principal principal){
 
-            String userName = principal.getName();
-            System.out.println("USERNAME " +userName);
-            //get the user using userName(Email)
+        String userName = principal.getName();
+        System.out.println("USERNAME " +userName);
+        //get the user using userName(Email)
 
-            User user =  userRepository.getUserByUserName(userName);
+        User user =  userRepository.getUserByUserName(userName);
 
-            model.addAttribute("user",user);
+        model.addAttribute("user",user);
 
-            System.out.println("USER "+user);
+        System.out.println("USER "+user);
 
-        }
+    }
 
 
-        //dashboard home
+    //dashboard home
     @RequestMapping("/index")
     public String dashboard(Model model, Principal principal){
 
@@ -57,67 +57,67 @@ public class UserController {
     @GetMapping("/add-contact")
     public String openAddContactForm(Model model){
 
-            model.addAttribute("contact",new Contact());
+        model.addAttribute("contact",new Contact());
         model.addAttribute("title","Add Contact");
         return "normal/add_contact_form";
     }
 
     //processing add contact form
-        @PostMapping("/process-contact")
-        public String processContact(@ModelAttribute Contact contact,
-                                     @RequestParam("profileImage") MultipartFile file,
-                                     Principal principal,
-                                     RedirectAttributes redirectAttributes) {
+    @PostMapping("/process-contact")
+    public String processContact(@ModelAttribute Contact contact,
+                                 @RequestParam("profileImage") MultipartFile file,
+                                 Principal principal,
+                                 RedirectAttributes redirectAttributes) {
 
-            try {
-                String name = principal.getName();
-                User user = this.userRepository.getUserByUserName(name);
+        try {
+            String name = principal.getName();
+            User user = this.userRepository.getUserByUserName(name);
 
-                //processing and uploading file
+            //processing and uploading file
 
-                if (file.isEmpty()) {
-                    //if the file is empty then try our message
-                    System.out.println("File is empty");
-                } else {
-                    //file the file to folder and update the name contact
-                    contact.setImage(file.getOriginalFilename());
+            if (file.isEmpty()) {
+                //if the file is empty then try our message
+                System.out.println("File is empty");
+            } else {
+                //file the file to folder and update the name contact
+                contact.setImage(file.getOriginalFilename());
 
-                    File saveFile = new ClassPathResource("static/image").getFile();
+                File saveFile = new ClassPathResource("static/image").getFile();
 
-                    Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + file.getOriginalFilename());
+                Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + file.getOriginalFilename());
 
-                    Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 
-                    System.out.println("image is upload");
+                System.out.println("image is upload");
 
-
-                }
-
-                contact.setUser(user);
-                user.getContact().add(contact);
-
-                this.userRepository.save(user);
-
-                System.out.println("DATA " + contact);
-
-                System.out.println("Added to database");
-
-                //Show message success
-                redirectAttributes.addFlashAttribute("message", new Message("Your contact is added !! Add more", "success"));
-                return "redirect:/user/add-contact";
-
-
-            } catch (Exception e) {
-                System.out.println("ERROR " + e.getMessage());
-                e.printStackTrace();
-                //show error message
-                redirectAttributes.addFlashAttribute("message", new Message("Something went wrong !! Try again..", "danger"));
-                return "redirect:/user/add-contact";
 
             }
 
+            contact.setUser(user);
+            user.getContact().add(contact);
+
+            this.userRepository.save(user);
+
+            System.out.println("DATA " + contact);
+
+            System.out.println("Added to database");
+
+            //Show message success
+            redirectAttributes.addFlashAttribute("message", new Message("Your contact is added !! Add more", "success"));
+            return "redirect:/user/add-contact";
+
+
+        } catch (Exception e) {
+            System.out.println("ERROR " + e.getMessage());
+            e.printStackTrace();
+            //show error message
+            redirectAttributes.addFlashAttribute("message", new Message("Something went wrong !! Try again..", "danger"));
+            return "redirect:/user/add-contact";
 
         }
+
+
+    }
 }
 
 
