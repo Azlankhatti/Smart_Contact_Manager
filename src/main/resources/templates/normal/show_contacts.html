@@ -29,12 +29,24 @@
 
 
         <tr th:each="c: ${contacts}">
+
           <th scope="row" th:text="${'SCMUSER'+c.cId}">1</th>
-          <td th:text="${c.name}">Mark</td>
-          <td th:text="${c.email}">Otto</td>
+
+
+          <td>
+            <img src="" class="my_proflie_image" th:src="@{'/image/'+${c.image}}" alt="profile photo"/>
+          <span th:text="${c.name}" ></span>
+          </td>
+          <td>
+
+            <a href="" th:href="@{'/user/'+${c.cId}+'/contact'}">
+              <span th:text="${c.email}" ></span>
+            </a>
+
+          </td>
           <td th:text="${c.phone}">@mdo</td>
           <td>
-            <button class="btn btn-danger btn-sm">Delete</button>
+            <button th:onclick="|deleteContact(${c.cId})|" class="btn btn-danger btn-sm">Delete</button>
             <button class="btn btn-primary btn-sm">Update</button>
 
           </td>

@@ -25,6 +25,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -87,6 +88,8 @@ public class UserController {
             if (file.isEmpty()) {
                 //if the file is empty then try our message
                 System.out.println("File is empty");
+                contact.setImage("contact.png");
+
             } else {
                 //file the file to folder and update the name contact
                 contact.setImage(file.getOriginalFilename());
@@ -157,6 +160,45 @@ public class UserController {
         return "normal/show_contacts";
     }
 
+        //show Contact details
+    @RequestMapping("/{cId}/contact")
+    public String showContactDetail(@PathVariable("cId") int cId, Model model ,Principal principal){
+
+        Optional<Contact> contactOptional =  this.contactRepository.findById(cId);
+        Contact contact =contactOptional.get();
+
+        String userName = principal.getName();
+        User user = this.userRepository.getUserByUserName(userName);
+
+        if (user.getId()==contact.getUser().getId()) {
+            model.addAttribute("contact", contact);
+        }
+
+        model.addAttribute("title","Show Contact Detail");
+        return "normal/contact_detail";
+    }
+
+    //delete contact handler
+    @GetMapping("/delete/{cId}")
+    public String deleteContact(@PathVariable("cId") int cId ,Model model,RedirectAttributes redirectAttributes){
+
+
+       Optional<Contact> contactOptional =  this.contactRepository.findById(cId);
+       Contact contact = contactOptional.get();
+
+
+        contact.setUser(null);
+
+        //remove img
+
+       this.contactRepository.delete(contact);
+
+       redirectAttributes.addFlashAttribute("message",new Message("Contact Deleted Successfully..", "success"));
+
+
+       return "redirect:/user/show-contacts/0";
+
+    }
 }
 
 

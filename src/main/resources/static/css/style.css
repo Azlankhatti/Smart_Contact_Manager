@@ -116,3 +116,11 @@ cursor: pointer;
      margin-left: 0% !important;
    }
  }
+
+ .my_proflie_image{
+ width:40px;
+ height:40px;
+ object-fit:cover;
+  border-radius: 50%;
+
+ }
