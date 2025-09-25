@@ -199,6 +199,73 @@ public class UserController {
        return "redirect:/user/show-contacts/0";
 
     }
+
+
+    //open update form handler
+    @PostMapping("/update-contact/{cId}")
+    public String updateFrom(@PathVariable("cId") int cId ,Model model){
+
+        model.addAttribute("title","Update Contact");
+
+        Contact contact =  this.contactRepository.findById(cId).get();
+        model.addAttribute("contact",contact);
+        return "normal/update_form";
+    }
+
+    //update contact handler
+
+    @RequestMapping(value = "/process-update",method = RequestMethod.POST)
+    public String updateHandler(@ModelAttribute Contact contact , Principal principal,
+                                @RequestParam("profileImage") MultipartFile file,
+                                Model model ,RedirectAttributes redirectAttributes ){
+
+
+        try {
+
+
+            //old contact details
+            Contact oldcontactDetail = this.contactRepository.findById(contact.getcId()).get();
+
+            //image
+            if(!file.isEmpty()){
+                //file work rewrite
+
+            }else{
+                contact.setImage(oldcontactDetail.getImage());
+            }
+
+            //delete old photo
+
+            File deleteFile = new ClassPathResource("static/image").getFile();
+            File file1 = new File(deleteFile, oldcontactDetail.getImage());
+            file1.delete();
+
+            //update new photo
+            File saveFile = new ClassPathResource("static/image").getFile();
+
+            Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + file.getOriginalFilename());
+
+            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+            contact.setImage(file.getOriginalFilename());
+
+
+            User user = this.userRepository.getUserByUserName(principal.getName());
+            contact.setUser(user);
+
+            this.contactRepository.save(contact);
+
+            redirectAttributes.addFlashAttribute("message",new Message("Your contact is update...","success"));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Contact name " +contact.getName());
+        System.out.println("Contact ID " +contact.getcId());
+        return "redirect:/user/"+contact.getcId()+"/contact";
+    }
+
+
 }
 
 
