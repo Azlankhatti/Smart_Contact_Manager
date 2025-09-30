@@ -180,19 +180,27 @@ public class UserController {
 
     //delete contact handler
     @GetMapping("/delete/{cId}")
-    public String deleteContact(@PathVariable("cId") int cId ,Model model,RedirectAttributes redirectAttributes){
+    public String deleteContact(@PathVariable("cId") int cId ,Model model,
+                                RedirectAttributes redirectAttributes,
+                                Principal principal){
 
 
        Optional<Contact> contactOptional =  this.contactRepository.findById(cId);
        Contact contact = contactOptional.get();
 
 
-        contact.setUser(null);
+//        contact.setUser(null);
+
+      User user = this.userRepository.getUserByUserName(principal.getName());
+      user.getContact().remove(contact);
+
+      this.userRepository.save(user);
+
 
         //remove img
 
-       this.contactRepository.delete(contact);
-
+//       this.contactRepository.delete(contact);
+        System.out.println("DELETED");
        redirectAttributes.addFlashAttribute("message",new Message("Contact Deleted Successfully..", "success"));
 
 
@@ -265,6 +273,15 @@ public class UserController {
         return "redirect:/user/"+contact.getcId()+"/contact";
     }
 
+
+    //Your profile handler
+
+    @GetMapping("/profile")
+    public String yourProfile(){
+
+        return "normal/profile";
+
+    }
 
 }
 

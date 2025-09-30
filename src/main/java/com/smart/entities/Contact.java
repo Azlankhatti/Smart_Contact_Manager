@@ -1,6 +1,7 @@
 package com.smart.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.Length;
 
@@ -23,6 +24,7 @@ public class Contact {
     private String description;
 
     @ManyToOne
+    @JsonIgnore
     private User user;
 
     public int getcId() {
@@ -96,5 +98,10 @@ public class Contact {
         this.user = user;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+//        return super.equals(obj);
 
+        return this.cId==((Contact)obj).getcId();
+    }
 }

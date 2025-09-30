@@ -18,7 +18,7 @@ public class User {
 
     private int id;
 
-    @NotBlank(message = "Name field is requried!!")
+    @NotBlank(message = "Name field is required!!")
     @Size(min = 2,max = 20,message = "min 2 and max 20 character are allowed !!")
     private String name;
 
@@ -32,7 +32,7 @@ public class User {
     @Column(length = 500)
     private String about;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Contact> contacts = new ArrayList<>();
 
 
