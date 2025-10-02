@@ -14,6 +14,8 @@
 
   <title th:text="${title}">base html</title>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 
 
 </head>
@@ -63,11 +65,11 @@
 
   <span onclick="toggleSidebar()"  class="crossBtn">&times;</span>
 
-  <a href="#" th:href="@{/user/index}" class="item"> <i class="fa-solid fa-house-chimney"></i> Home</a>
-  <a href="#" th:href="@{/user/show-contacts/0}" class="item"> <i class="fas fa-id-card-alt"></i> View Contacts</a>
-  <a href="#" th:href="@{/user/add-contact}" class="item"> <i class="fas fa-pencil-alt"></i> Add Contact</a>
-  <a href="#" th:href="@{/user/profile}" class="item"> <i class="fas fa-user-circle"></i> Your Profile</a>
-  <a href="#" class="item"> <i class="fas fa-cogs"></i> Setting</a>
+  <a id="home-link" href="#" th:href="@{/user/index}" class="item active"> <i class="fa-solid fa-house-chimney"></i> Home</a>
+  <a id="contacts-link" href="#" th:href="@{/user/show-contacts/0}" class="item active"> <i class="fas fa-id-card-alt"></i> View Contacts</a>
+  <a id="add-link" href="#" th:href="@{/user/add-contact}" class="item active"> <i class="fas fa-pencil-alt"></i> Add Contact</a>
+  <a id="profile-link" href="#" th:href="@{/user/profile}" class="item active"> <i class="fas fa-user-circle"></i> Your Profile</a>
+  <a id="settings-link" href="#" th:href="@{/user/settings}" class="item active"> <i class="fas fa-cogs"></i> Setting</a>
   <a href="#" th:href="@{/logout}" class="item"> <i class="fas fa-sign-out-alt"></i> Logout</a>
 
    <div class="divider"></div>

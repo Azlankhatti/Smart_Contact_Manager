@@ -76,11 +76,11 @@ text-decoration:none;
 color:gray;
 }
 
-
+/*
 .sidebar a:hover{
 background:#e2e2e2;
 }
-
+*/
 .sidebar .divider{
 height: 2px;
 width:100%;
@@ -140,5 +140,8 @@ cursor: pointer;
  border: 1px solid gray;
  display: none;
 
-
+ }
+ .active{
+ background:#009688; !important;
+ color : white !important;
  }
